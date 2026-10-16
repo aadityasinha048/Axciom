@@ -1,0 +1,110 @@
+@model AcxiomCRM.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer Details";
+    var badgeClass = Model.Status switch
+    {
+        "Active" => "bg-success",
+        "Inactive" => "bg-secondary",
+        "Prospect" => "bg-info text-dark",
+        "Lead" => "bg-warning text-dark",
+        _ => "bg-light text-dark border"
+    };
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-9 col-md-11">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h1 class="h3 mb-1 text-primary">Customer Details</h1>
+                <p class="text-muted mb-0">Complete profile for @Model.CustomerName.</p>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                &larr; Back to Customers
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-primary text-white font-monospace fs-6">@Model.CustomerCode</span>
+                        <span class="badge @badgeClass ms-2 fs-6">@Model.Status</span>
+                    </div>
+                    <span class="text-muted small">Database ID #@Model.CustomerId</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Profile & Company</h6>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-5 text-muted">Customer Name</dt>
+                            <dd class="col-sm-7 fw-semibold text-dark mb-3">@Model.CustomerName</dd>
+
+                            <dt class="col-sm-5 text-muted">Company Name</dt>
+                            <dd class="col-sm-7 mb-3">
+                                @(string.IsNullOrWhiteSpace(Model.CompanyName) ? "—" : Model.CompanyName)
+                            </dd>
+
+                            <dt class="col-sm-5 text-muted">Customer Status</dt>
+                            <dd class="col-sm-7 mb-3">
+                                <span class="badge @badgeClass">@Model.Status</span>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Contact Channels</h6>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-5 text-muted">Email Address</dt>
+                            <dd class="col-sm-7 mb-3">
+                                <a href="mailto:@Model.Email" class="text-decoration-none">
+                                    @Model.Email
+                                </a>
+                            </dd>
+
+                            <dt class="col-sm-5 text-muted">Phone Number</dt>
+                            <dd class="col-sm-7 mb-3">
+                                <span class="badge bg-light text-dark border">
+                                    +91 @Model.Phone
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-12">
+                        <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Location & Address</h6>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-3 text-muted">Street Address</dt>
+                            <dd class="col-sm-9 mb-3">@Model.Address</dd>
+
+                            <dt class="col-sm-3 text-muted">City & State</dt>
+                            <dd class="col-sm-9 mb-3">@Model.City, @Model.State</dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-12">
+                        <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">Audit Information</h6>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-3 text-muted">Created Date</dt>
+                            <dd class="col-sm-9 mb-3 text-muted">
+                                @Model.CreatedDate.ToString("dd MMM yyyy, hh:mm tt UTC")
+                            </dd>
+
+                            <dt class="col-sm-3 text-muted">Created By</dt>
+                            <dd class="col-sm-9 mb-0 text-muted">
+                                <span class="badge bg-light text-dark border">@Model.CreatedBy</span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-end gap-2 p-3 border-top">
+                <a asp-action="Index" class="btn btn-light border">Back to List</a>
+                <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-primary">Edit Customer</a>
+                <a asp-action="Delete" asp-route-id="@Model.CustomerId" class="btn btn-outline-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
